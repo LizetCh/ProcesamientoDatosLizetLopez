@@ -1,0 +1,31 @@
+# Archivos específicos de Jupyter Notebook
+.ipynb_checkpoints/
+anaconda_projects/
+# O, para ignorar en cualquier subdirectorio:
+# **/.ipynb_checkpoints/
+
+# Ignorar archivos de entorno virtual (común en proyectos Python)
+.venv/
+env/
+venv/
+ENV/
+venv.bak/
+env.bak/
+
+# Ignorar caché y archivos temporales de Python
+*.pyc
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Ignorar archivos de datos grandes o sensibles que no deben estar en control de versiones
+# data/*.csv
+# data/*.parquet
+# credentials.json
+*.env
+
+# Ignorar archivos específicos del sistema operativo o editores (ej. VS Code)
+.DS_Store
+.vscode/
