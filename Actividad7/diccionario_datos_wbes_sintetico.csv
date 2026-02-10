@@ -1,0 +1,12 @@
+variable,tipo,descripcion
+employees,numérica,Número de empleados (aprox.)
+firm_age_years,numérica,Años de operación de la empresa
+training,binaria,"Recibió capacitación (1=Sí, 0=No)"
+access_finance,binaria,"Obtuvo financiamiento formal (1=Sí, 0=No)"
+exporter,binaria,"Exporta (1=Sí, 0=No)"
+digital_payments,binaria,"Usa pagos digitales (1=Sí, 0=No)"
+competition_level,categórica,Competencia percibida: Baja/Media/Alta
+sector,categórica,Sector: Servicios/Comercio/Manufactura/Tecnologia
+sales_annual_usd,numérica,Ventas anuales (USD) — variable objetivo para regresión lineal
+labor_productivity_usd_per_employee,numérica,Productividad: ventas por empleado (USD)
+successful,binaria,"Etiqueta de éxito (1=exitosa, 0=no exitosa)"
