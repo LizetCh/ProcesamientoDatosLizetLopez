@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reconocimiento de Números</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; }
+        #canvas { border: 2px solid black; cursor: crosshair; background-color: white; }
+        .controles { margin-top: 20px; }
+        #resultado { font-size: 50px; color: blue; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Dibuja un número (0-9)</h1>
+    <canvas id="canvas" width="280" height="280"></canvas>
+    
+    <div class="controles">
+        <button onclick="limpiar()">Limpiar Lienzo</button>
+        <p>Resultado de la predicción:</p>
+        <div id="resultado">?</div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const resultadoDiv = document.getElementById('resultado');
+        let dibujando = false;
+
+        // Configuración del pincel
+        ctx.lineWidth = 20;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'black';
+
+        // Eventos del Mouse
+        canvas.onmousedown = () => dibujando = true;
+        canvas.onmouseup = () => {
+            dibujando = false;
+            ctx.beginPath();
+            predecir(); // Llamar a la predicción al soltar el mouse
+        };
+        
+        canvas.onmousemove = (e) => {
+            if (!dibujando) return;
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        };
+
+        function limpiar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            resultadoDiv.innerHTML = "?";
+        }
+
+        function predecir() {
+            // 1. Obtener píxeles y procesarlos a una matriz de 28x28 
+            var pixels = [];
+                for (var x=0; x < 28; x++) {
+                    for (var y=0; y < 28; y++) {
+                        var imgData = ctx.getImageData(y * 10, x * 10, 1, 1);
+                        var data = imgData.data;
+                        
+                        //Pixel negro o blanco?
+                        var color = (data[3])/255; //Data tiene 4 canales:Rojo, Verde, Azul, Alpha
+                        //Divido entre 255 para tener de 0 a 1
+                        
+                        //Dejar siempre 2 decimales
+                        color = (Math.round(color*100)/100).toFixed(2)
+                        pixels.push(color);
+                    }
+                }
+
+
+            // 2. Enviar datos por Ajax al puerto 8000 
+            $.post("http://localhost:8000", {pixeles: pixels.join(",")}, 
+                function(response) {
+                    $("#resultado").html(response); 
+                }
+            );
+        }
+    </script>
+</body>
+</html>
